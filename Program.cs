@@ -8,7 +8,7 @@ namespace ConsoleApplication
         {
             Console.WriteLine("Hi");
             Console.WriteLine("Debxug test");
-            String hello = "aaab";
+            String hello = "trickde";
             
         }
     }
