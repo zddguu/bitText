@@ -27,7 +27,7 @@ namespace helenthing
 
             fileWorker file = new fileWorker(referenceText);
 
-           int numCompareTexts = file.setupComparisonTexts(ref comparisonTexts, comparisonTextDir);
+           int numCompareTexts = file.setupComparisonTexts(comparisonTexts, comparisonTextDir);
 
            Dictionary<string, int>[] comparisonTextDic = new Dictionary<string, int>[numCompareTexts];
 
@@ -39,7 +39,7 @@ namespace helenthing
 
             Dictionary<string, int> a = work.analyzeyo(output, ngram);
 
-            work.doComparisonTexts(comparisonTexts, ref comparisonTextDic, ngram);
+            work.doComparisonTexts(comparisonTexts, comparisonTextDic, ngram);
 
             //  Console.Write(work.printdic(a, ngram));
             file.nomalizeDictionary(a);
@@ -73,7 +73,7 @@ namespace helenthing
             dic["Total"] = total;
         }
 
-        public int setupComparisonTexts(ref string[] comparisonTexts, string comparisonTextDir)
+        public int setupComparisonTexts(string[] comparisonTexts, string comparisonTextDir)
         {
             comparisonTexts = Directory.GetFiles(comparisonTextDir, "*.txt").ToArray();
             return comparisonTexts.Length;
@@ -100,7 +100,7 @@ namespace helenthing
 
                 foreach (KeyValuePair<string, int> ngram in dic)
                 {
-                    writer.WriteStartElement("SNACK");
+                    writer.WriteStartElement("Element1");
                     writer.WriteElementString("Ngram", "'" + ngram.Key + "'");
 
                     if (!normalized) { writer.WriteElementString("value", ngram.Value.ToString()); }
@@ -121,7 +121,7 @@ namespace helenthing
     class stringWorker
     {
 
-        public void doComparisonTexts(string[] comparisonTexts, ref Dictionary<string, int>[] dics, int ngram)
+        public void doComparisonTexts(string[] comparisonTexts, Dictionary<string, int>[] dics, int ngram)
         {
             for (int i = 0; i < comparisonTexts.Length; i++)
             {
@@ -129,6 +129,36 @@ namespace helenthing
                 string b = parseString(a.text);
                 dics[i] = analyzeyo(b, ngram);
             }
+        }
+
+        public void compare(Dictionary<string, int> refdic, Dictionary<string, int> comparedic)
+        {
+//I only want to compare the reference paper to one other, here, due to memory constraints
+//Also, maybe get rid of the "text" in the dictionaries, and replace with ints to save on further space?
+//This'd maybe get us up to a 31 ngram?
+
+
+            bool normalized = true;
+try{
+int a =  refdic["Total"];
+int b = comparedic["Total"];
+normalized = true;
+}
+catch(System.Collections.Generic.KeyNotFoundException)
+{
+    normalized = false;
+}
+
+if(normalized)
+{
+foreach( KeyValuePair<String,int> a in refdic)
+{
+
+}
+}
+
+comparedic["COMPARED"] = 1;
+
         }
 
         public string parseString7bit(string input)
